@@ -21,11 +21,15 @@ def setup_japanese_font():
     font_path = base_dir / "fonts" / "ipaexg.ttf"
 
     if font_path.exists():
+        # 🔥 フォントを明示的に登録
+        fm.fontManager.addfont(str(font_path))
         font_prop = fm.FontProperties(fname=str(font_path))
-        plt.rcParams["font.family"] = font_prop.get_name()
+        font_name = font_prop.get_name()
+        plt.rcParams["font.family"] = font_name
         plt.rcParams["axes.unicode_minus"] = False
+        print(f"✅ フォント読み込み成功: {font_name}")
     else:
-        print("⚠ 日本語フォントが見つかりません")
+        print("❌ フォントが見つかりません")
 
 # 一度だけ実行
 if "font_loaded" not in st.session_state:
