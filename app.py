@@ -1,21 +1,8 @@
-# import streamlit as st
-
-
-# # --- 設定 ---
-# st.set_page_config(page_title="M加工稼働分析ダッシュボード", layout="wide")
-
-# # --- 内容 ---
-# st.title("📊M加工稼働分析ダッシュボード")
-
-# st.markdown("### 左のメニューからページを選択してください。")
-
-# st.subheader("daily")
-# st.text("日時の号機ごとの稼働率を見る")
-# st.subheader("analysis")
-# st.text("範囲を指定して稼働率を見る")
-
-
 import streamlit as st
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+from pathlib import Path
+
 
 # ---------------------------
 # ページ設定
@@ -25,6 +12,26 @@ st.set_page_config(
     page_icon="📊",
     layout="wide"
 )
+
+# -----------------------------
+# 日本語フォント設定
+# -----------------------------
+def setup_japanese_font():
+    base_dir = Path(__file__).resolve().parent
+    font_path = base_dir / "fonts" / "ipaexg.ttf"
+
+    if font_path.exists():
+        font_prop = fm.FontProperties(fname=str(font_path))
+        plt.rcParams["font.family"] = font_prop.get_name()
+        plt.rcParams["axes.unicode_minus"] = False
+    else:
+        print("⚠ 日本語フォントが見つかりません")
+
+# 一度だけ実行
+if "font_loaded" not in st.session_state:
+    setup_japanese_font()
+    st.session_state["font_loaded"] = True
+
 
 # ---------------------------
 # ヘッダー
