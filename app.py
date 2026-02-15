@@ -17,8 +17,7 @@ st.set_page_config(
 # 日本語フォント設定
 # -----------------------------
 def setup_japanese_font():
-    base_dir = Path(__file__).resolve().parent
-    font_path = base_dir / "fonts" / "ipaexg.ttf"
+    font_path = Path.cwd() / "fonts" / "ipaexg.ttf"
 
     if font_path.exists():
         # 🔥 フォントを明示的に登録
