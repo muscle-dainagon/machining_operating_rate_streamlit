@@ -109,6 +109,24 @@ class MachineDailyReport:
 
     # --- 描画メソッド ---
     def draw(self):
+        # ================================
+        # ★ 稼働ゼロチェック（最重要）
+        # ================================
+        if self.real_work_time <= 0:
+            fig = plt.figure(figsize=(10, 4))
+            plt.text(
+                0.5,
+                0.5,
+                "機械が稼働していません。",
+                ha="center",
+                va="center",
+                fontsize=24,
+                color="red",
+            )
+            plt.axis("off")
+            return fig
+
+        # ===== 通常描画 =====
         fig = plt.figure(figsize=(16, 10))
         fig.suptitle(
             f"{self.config.machine_name}　{self.config.report_date}",
