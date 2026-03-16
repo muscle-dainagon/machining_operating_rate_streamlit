@@ -28,11 +28,11 @@ def get_sale(machine_name: str, selected_date):
     date_str = selected_date.strftime("%Y-%m-%d")
 
     query = f"""
-    SELECT sale
-    FROM "{machine_name}"
-    WHERE date = ?
-    LIMIT 1
-    """
+        SELECT sale, day_operator, day_multi, night_operator, night_multi
+        FROM "{machine_name}"
+        WHERE date = ?
+        LIMIT 1
+        """
 
     cursor.execute(query, (date_str,))
     result = cursor.fetchone()
@@ -40,9 +40,10 @@ def get_sale(machine_name: str, selected_date):
     conn.close()
 
     if result:
-        return result[0]
+        sales_amount, day_operator, day_multi, night_operator, night_multi = result
+        return sales_amount, day_operator, day_multi, night_operator, night_multi
     else:
-        return 0
+        return 0, None, None, None, None
 
 
 @st.cache_data(ttl=3600) # 1時間
@@ -94,13 +95,17 @@ if submitted_btn:
         mask_off = (df["ステータス"] == "電源断") & (df["ステータス"].shift() != "電源断")
         off_rows = df.loc[mask_off, "日時"]
         off_time = off_rows.iloc[-1].strftime("%H:%M:%S") if not off_rows.empty else None
-        sale_amount = get_sale(machine_name, selected_date)
+        sales_amount, day_operator, day_multi, night_operator, night_multi = get_sale(machine_name, selected_date)
         config = ReportConfig(
             machine_name=f"{machine_name}",
             report_date=selected_date.strftime("%Y/%m/%d"),
-            sales_amount=sale_amount,
+            sales_amount=sales_amount,
             on_time=on_time,
-            off_time=off_time
+            off_time=off_time,
+            day_operator=day_operator,
+            day_multi=day_multi,
+            night_operator=night_operator,
+            night_multi=night_multi,
         )
         fig = generate_report(df, config)
         st.pyplot(fig)

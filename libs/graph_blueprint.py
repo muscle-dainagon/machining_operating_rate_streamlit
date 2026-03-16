@@ -12,6 +12,10 @@ class ReportConfig:
     sales_amount: int
     on_time: str
     off_time: str
+    day_operator: str
+    day_multi: str
+    night_operator: str
+    night_multi: str
     start_hour: int = 5
     base_work_hours: float = 16.5
     color_map: dict = None
@@ -340,40 +344,23 @@ class MachineDailyReport:
             color="red",
         )
 
-        ax_k.text(
-            RIGHT_X - 0.2,
-            1.1,
-            "電源オン：",
-            ha="right",
-            va="center",
-            fontsize=22,
-            color="black",
-        )
-        ax_k.text(
-            RIGHT_X - 0.2,
-            1.1,
-            f"{self.config.on_time}",
-            ha="left",
-            va="center",
-            fontsize=22,
-            color="blue",
-        )
-
-        ax_k.text(
-            RIGHT_X -0.2,
-            0.95,
-            "電源オフ：",
-            ha="right",
-            va="center",
-            fontsize=22,
-            color="black",
-        )
-        ax_k.text(
-            RIGHT_X - 0.2,
-            0.95,
-            f"{self.config.off_time}",
-            ha="left",
-            va="center",
-            fontsize=22,
-            color="blue",
-        )
+        # --- 電源 ---
+        ax_k.text(LEFT_X, 1.1, "電源オン：", fontsize=15,color="black", ha="right", va="center")
+        ax_k.text(LEFT_X, 1.1, f"{self.config.on_time}", fontsize=15,color="blue", ha="left", va="center")
+        ax_k.text(LEFT_X, 0.95, "電源オフ：", fontsize=15,color="black", ha="right", va="center")
+        ax_k.text(LEFT_X, 0.95, f"{self.config.off_time}", fontsize=15,color="blue", ha="left", va="center")
+        # --- 担当者 ---
+        ## 日勤
+        ax_k.text(RIGHT_X, 1.1, "日勤：", fontsize=15,color="black", ha="right", va="center")
+        if self.config.day_multi == None:
+            day_multi = ""
+        else:
+            day_multi = f"({self.config.day_multi})"
+        ax_k.text(RIGHT_X, 1.1, f"{self.config.day_operator} {day_multi}", fontsize=15,color="blue", ha="left", va="center")
+        ## 夜勤
+        ax_k.text(RIGHT_X, 0.95, "夜勤：", fontsize=15,color="black", ha="right", va="center")
+        if self.config.night_multi == None:
+            night_multi = ""
+        else:
+            night_multi = f"({self.config.night_multi})"
+        ax_k.text(RIGHT_X, 0.95, f"{self.config.night_operator} {night_multi}", fontsize=15,color="blue", ha="left", va="center")
