@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.font_manager as fm
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -12,10 +13,10 @@ class ReportConfig:
     sales_amount: int
     on_time: str
     off_time: str
-    day_operator: str
-    day_multi: str
-    night_operator: str
-    night_multi: str
+    day_operator: Optional[str]
+    day_multi: Optional[str]
+    night_operator: Optional[str]
+    night_multi: Optional[str]
     start_hour: int = 5
     base_work_hours: float = 16.5
     color_map: dict = None
