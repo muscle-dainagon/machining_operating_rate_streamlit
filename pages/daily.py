@@ -64,7 +64,7 @@ with st.sidebar.form(key="filter_form"):
     ## 機械名
     machine_name = st.selectbox(
         "機械名を選択",
-        ["M1-1", "M1-2", "M1-3", "M1-4", "M1-6", "M1-7", "M2-3", "LAB_M1-1", "LAB_M1-3"]
+        ["M1-1", "M1-2", "M1-3", "M1-4", "M1-6", "M1-7", "M1-8", "M2-3", "LAB_M1-1", "LAB_M1-3"]
     )
 
     ## 日付
