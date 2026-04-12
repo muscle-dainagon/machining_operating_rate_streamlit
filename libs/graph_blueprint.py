@@ -30,6 +30,7 @@ class ReportConfig:
                 "段取り": "yellow",
                 "自動停止": "green",
                 "自動起動": "#1E90FF",
+                "パレチェン": "black",
             }
 
 
@@ -107,6 +108,15 @@ class MachineDailyReport:
             self.config.sales_amount / self.real_work_time
             if self.real_work_time > 0 else 0
         )
+
+        # =================================================
+        # ★ パレチェンを自動停止に加算・自動起動から減算
+        # =================================================
+        pallet_sec = self.summary.get("パレチェン", 0)
+
+        if pallet_sec:
+            self.summary["自動停止"] = self.summary.get("自動停止", 0) + pallet_sec
+            self.summary["自動起動"] = self.summary.get("自動起動", 0) - pallet_sec
 
     # --- ユーティリティ ---
     def _get_hours(self, status: str) -> float:
@@ -214,6 +224,21 @@ class MachineDailyReport:
             loc="center left",
             bbox_to_anchor=(1.01, 0.5),
         )
+
+        # =================================================
+        # ★ パレチェンの縦ライン（黒）
+        # =================================================
+        pallet_df = self.df[self.df["ステータス"] == "パレチェン"]
+
+        for _, row in pallet_df.iterrows():
+            ax.axvline(
+                x=row["start_h"],
+                color="black",
+                linewidth=3,
+                linestyle="-",
+                alpha=0.8,
+                zorder=5,
+            )
 
     # --- 円グラフ ---
     def _draw_pie(self, gs):
