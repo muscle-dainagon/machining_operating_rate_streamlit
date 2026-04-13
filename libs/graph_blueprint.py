@@ -233,8 +233,10 @@ class MachineDailyReport:
         for _, row in pallet_df.iterrows():
             ax.axvline(
                 x=row["start_h"],
+                ymin=0.0,   # 下端（0=最下部）
+                ymax=0.5,   # 上端（0.5=真ん中まで）
                 color="black",
-                linewidth=3,
+                linewidth=1,
                 linestyle="-",
                 alpha=0.8,
                 zorder=5,
